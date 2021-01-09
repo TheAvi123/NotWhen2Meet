@@ -1,10 +1,11 @@
 from flask import Flask, render_template, url_for, redirect, session
 from authlib.integrations.flask_client import OAuth
 from datetime import timedelta
-import os, quickstart
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from quickstart import Quickstart
+import os
 
 app = Flask(__name__)
 app.secret_key = 'secret key'
@@ -42,24 +43,26 @@ def authorize():
     user_info = resp.json()
     session['email'] = user_info['email']
 
-    creds = pickle.load(token)
+    quickstart = Quickstart()
+
+
     page_token = None
-    service = build('calendar', 'v3', credentials=creds)
     while True:
-        events = service.events().list(calendarId='primary', pageToken=page_token).execute()
+        events = quickstart.service.events().list(calendarId='primary', pageToken=page_token).execute()
         for event in events['items']:
-            print(event['summary'])
+            print(f"GOT HERE!!! {event['summary']}")
         page_token = events.get('nextPageToken')
         if not page_token:
             break
 
-    # return redirect('/')
+    return redirect('/')
 
 @app.route('/logout')
 def logout():
     for key in list(session.keys()):
         session.pop(key)
     return redirect('/')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
