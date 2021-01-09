@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, redirect, session
 from authlib.integrations.flask_client import OAuth
-import os
 from datetime import timedelta
+import os, quickstart
 
 app = Flask(__name__)
 app.secret_key = 'secret key'
