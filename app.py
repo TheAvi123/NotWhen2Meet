@@ -22,7 +22,7 @@ google = oauth.register(
 @app.route('/')
 def index():
     email = dict(session).get('email', None)
-    return f'Hello, {email}'
+    return f'Hello, {email}' if email else 'Hello'
 
 
 @app.route('/login')
