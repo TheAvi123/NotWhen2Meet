@@ -47,7 +47,8 @@ def main():
         print('No upcoming events found.')
     for event in events:
         start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
+        end = event['end'].get('dateTime', event['end'].get('date'))
+        print(start, end, event['summary'])
 
 
 if __name__ == '__main__':
